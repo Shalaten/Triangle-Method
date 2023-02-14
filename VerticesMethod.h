@@ -33,6 +33,6 @@ private:
 		NEUTRAL,
 		WRONG
 	};
-	void triangleRecursion(int firstVertice, int secondVertice, std::vector<bool>& verticesStateR, int& rightVerticesAmount, std::vector<Edge>& wayR);
+	void TriangleRecursion(std::vector<Edge>& minWay, double minWayWeight, int rightVerticesAmount, std::vector<bool>& verticesStates);
 
 };

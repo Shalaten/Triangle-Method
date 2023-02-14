@@ -1,5 +1,12 @@
 #include "Edge.h"
 
+Edge::Edge()
+{
+	this->firstPoint = 0;
+		this->secondPoint = 0;
+		this->weight = 0.0;
+}
+
 Edge::Edge(int firstPoint = 0, int secondPoint = 0, double weight = 0) {
 	this->firstPoint = firstPoint;
 	this->secondPoint = secondPoint;
@@ -34,4 +41,11 @@ void Edge::SetSecondPoint(int secondPoint)
 void Edge::SetWeight(double weight)
 {
 	this->weight = weight;
+}
+
+void Edge::operator=(const Edge& edge)
+{
+	this->firstPoint = edge.firstPoint;
+	this->secondPoint = edge.secondPoint;
+	this->weight = edge.weight;
 }

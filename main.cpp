@@ -3,11 +3,14 @@
 int main(int argc, char* argv[]) {
 	setlocale(LC_ALL, "ru");
 
-	VerticesMethod verticesMethod(5);
+	VerticesMethod verticesMethod(4);
 
-	//verticesMethod.PrintEdgeMatrix();
+	
 	std::cout << std::endl;
 	verticesMethod.PrintBroodForceMethodWay();
+
+
+	std::cout << std::endl;
 
 	return 0;
 }
