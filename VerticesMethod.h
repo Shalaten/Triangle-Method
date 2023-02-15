@@ -28,11 +28,6 @@ private:
 	void BroodForceMethodRecursion(std::vector<int> wayM, int counterM, double sumWeightM, int lastPoint, std::vector<bool> checkedPointsM);
 	bool IsEquals(int oneNumber, int twoNumber);
 	bool IsMore(int oneNumber, int twoNumber);
-	enum class EdgeState {
-		RIGHT,
-		NEUTRAL,
-		WRONG
-	};
 	void TriangleRecursion(std::vector<Edge>& minWayR, double minWayWeightR, int rightVerticesAmountR, std::vector<bool>& verticesStatesR);
 
 };

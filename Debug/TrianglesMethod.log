@@ -1,2 +1,7 @@
-﻿  main.cpp
+﻿  VerticesMethod.cpp
+H:\Work\Cprojects\TrianglesMethod\VerticesMethod.cpp(8,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+H:\Work\Cprojects\TrianglesMethod\VerticesMethod.cpp(51,26): warning C4018: '<': signed/unsigned mismatch
+H:\Work\Cprojects\TrianglesMethod\VerticesMethod.cpp(312,21): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
   TrianglesMethod.vcxproj -> H:\Work\Cprojects\TrianglesMethod\Debug\TrianglesMethod.exe

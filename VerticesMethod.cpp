@@ -1,6 +1,7 @@
 #include "VerticesMethod.h"
 #include <string>
 #define DEBUG3
+//#define DEBUG
 
 VerticesMethod::VerticesMethod(int pointsAmount)
 {
@@ -16,6 +17,106 @@ VerticesMethod::VerticesMethod(int pointsAmount)
 void VerticesMethod::FindWay()
 {
 #ifdef DEBUG3
+	std::vector<Edge> minWayTrue;
+	minWayTrue.reserve(pointsAmount);
+	double minWayWeightTrue = 0.0;
+
+	for (int oneV = 0; oneV < pointsAmount; ++oneV) {
+		for (int twoV = 0; twoV < pointsAmount; ++twoV) {
+			if (!IsEquals(oneV, twoV)) {
+				for (int threeV = 0; threeV < pointsAmount; ++threeV) {
+					if (!IsEquals(oneV, threeV) && !IsEquals(twoV, threeV)) {
+						// Создание списка рёбер 
+						std::vector<Edge> minWay;
+						minWay.reserve(pointsAmount);
+						// Добавление в список три первые ребра
+						minWay.push_back(Edge(oneV, twoV, edges[oneV][twoV].GetWeight()));
+						minWay.push_back(Edge(twoV, threeV, edges[twoV][threeV].GetWeight()));
+						minWay.push_back(Edge(threeV, oneV, edges[threeV][oneV].GetWeight()));
+						// Количество использованых вершин
+						int rightVerticesAmount = 3;
+						//  Список рёбер которые были использованы
+						std::vector<bool> verticesStates(pointsAmount, false);
+						verticesStates[oneV] = true;
+						verticesStates[twoV] = true;
+						verticesStates[threeV] = true;
+						// Минимальный вес пути
+						double minWayWeight = edges[oneV][twoV].GetWeight() + edges[twoV][threeV].GetWeight() + edges[threeV][oneV].GetWeight();
+						// Создаём рекурсию поиска новых рёбер
+						while (rightVerticesAmount != pointsAmount) {
+							double newVerticeWeightSum = 0.0;
+							int newVertice = 0;
+							Edge selectedEdge;
+							int selectedEdgeNumber = 0;
+							for (int j = 0; j < minWay.size(); ++j) {
+								double startWeightsSum = minWayWeight - minWay[j].GetWeight();
+								double potentialWeightSum = 0.0;
+								int potentialNewVertice = 0;
+								Edge potentialSelectedEdge = minWay[j];
+								int potentialSelectedEdgeNumber = j;
+								for (int i = 0; i < pointsAmount; ++i) {
+									if (!verticesStates[i]) {
+										double findWeightSum = edges[minWay[j].GetFirstPoint()][i].GetWeight() + edges[minWay[j].GetSecondPoint()][i].GetWeight() + startWeightsSum;
+										if (potentialWeightSum == 0) {
+											potentialWeightSum = findWeightSum;
+											potentialNewVertice = i;
+										}
+										else if (findWeightSum < potentialWeightSum) {
+											potentialWeightSum = findWeightSum;
+											potentialNewVertice = i;
+										}
+									}
+								}
+								if (newVerticeWeightSum == 0) {
+									newVerticeWeightSum = potentialWeightSum;
+									newVertice = potentialNewVertice;
+									selectedEdge = potentialSelectedEdge;
+									selectedEdgeNumber = potentialSelectedEdgeNumber;
+								}
+								else if (newVerticeWeightSum > potentialWeightSum) {
+									newVerticeWeightSum = potentialWeightSum;
+									newVertice = potentialNewVertice;
+									selectedEdge = potentialSelectedEdge;
+									selectedEdgeNumber = potentialSelectedEdgeNumber;
+								}
+							}
+							// Осталось удалить старое ребро, добавить два новых и опять вызвать TriangleRecursion передав в неё все нужные параметры
+							minWayWeight -= selectedEdge.GetWeight();
+							rightVerticesAmount--;
+							std::vector<Edge>::iterator itMinWay = minWay.begin();
+							minWay.erase(itMinWay + selectedEdgeNumber);
+							minWay.push_back(Edge(selectedEdge.GetFirstPoint(), newVertice, edges[selectedEdge.GetFirstPoint()][newVertice].GetWeight()));
+							minWayWeight += edges[selectedEdge.GetFirstPoint()][newVertice].GetWeight();
+							rightVerticesAmount++;
+							minWay.push_back(Edge(selectedEdge.GetSecondPoint(), newVertice, edges[selectedEdge.GetSecondPoint()][newVertice].GetWeight()));
+							minWayWeight += edges[selectedEdge.GetSecondPoint()][newVertice].GetWeight();
+							rightVerticesAmount++;
+
+							verticesStates[newVertice] = true;
+						}
+						/////////////////////////////////////////////////
+						if (minWayWeightTrue == 0) {
+							minWayWeightTrue = minWayWeight;
+							minWayTrue = minWay;
+						}
+						else if (minWayWeightTrue > minWayWeight) {
+							minWayWeightTrue = minWayWeight;
+							minWayTrue = minWay;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	std::cout << "Triangle Method" << std::endl;
+	for (auto weightS : minWayTrue) {
+		std::cout << weightS.GetFirstPoint() << " - " << weightS.GetSecondPoint() << "\t";
+	}
+	std::cout << minWayWeightTrue << std::endl;
+#endif
+#ifdef DEBUG
+#pragma region MyRegion
 	// Создание списка рёбер 
 	std::vector<Edge> minWay;
 	minWay.reserve(pointsAmount);
@@ -84,6 +185,9 @@ void VerticesMethod::FindWay()
 
 		verticesStates[newVertice] = true;
 	}
+#pragma endregion
+
+
 
 	for (auto weightS : minWay) {
 		std::cout << weightS.GetFirstPoint() << " - " << weightS.GetSecondPoint() << "\t";
